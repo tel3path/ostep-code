@@ -4,15 +4,15 @@ all: cpu mem threads io
 clean:
 	rm -f cpu mem threads io
 
-cpu: cpu.c common.h
+cpu: cpu.c
 	gcc -o cpu cpu.c -Wall
 
-mem: mem.c common.h
+mem: mem.c
 	gcc -o mem mem.c -Wall
 
-threads: threads.c common.h common_threads.h
+threads: threads.c
 	gcc -o threads threads.c -Wall -pthread
 
-io: io.c common.h
+io: io.c
 	gcc -o io io.c -Wall
 
