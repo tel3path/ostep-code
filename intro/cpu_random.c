@@ -64,8 +64,9 @@ int main(int argc, char *argv[])
 
 #ifdef __CHERI_PURE_CAPABILITY__
     printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
-    "this program in succession, the address of str should be the same for instances having the "
-    "same value of str.\n");
+    "this program on the command line, like so:\n");\
+    printf("\nprompt> ./cpu_stdin & ./cpu_stdin & ./cpu_stdin & ./cpu_stdin &\n");
+    printf("\nthe address of str will be the same for each process having the same value of str.\n");
     pp_cap(str);
 #else
     printf("Address of str = %p\n", &str);
