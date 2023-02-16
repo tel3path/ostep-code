@@ -17,9 +17,13 @@
  * prompt> ./cpu_random & ./cpu_random & ./cpu_random & ./cpu_random &
  *
  * The interesting thing about running cpu_random in a CHERI environment
- * is that if the value of str is the same, the address of the capability
- * will be the same.
- * Compare this to cpu_stdin, which has a different value for str each time.
+ * is that for instances having the same the value of str 
+ * (which may be the case for two or more instances, since the randomization
+ * of the value of str is time-based), the capabilities in the respective
+ * processes will have the same address.
+ *
+ * Compare this to cpu_stdin, which has a different value for str each time,
+ * and has the same address for str's capability each time.
 */
 
 #include <assert.h>
@@ -28,6 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 
@@ -51,7 +56,7 @@ void spin(intptr_t howlong)
 }
 
 int main(int argc, char *argv[])
-{
+{    
     char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     srand((unsigned)time(NULL));
     size_t index = rand() % 26;
@@ -64,11 +69,13 @@ int main(int argc, char *argv[])
 
 #ifdef __CHERI_PURE_CAPABILITY__
     printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
-    "this program on the command line, like so:\n");\
-    printf("\nprompt> ./cpu_stdin & ./cpu_stdin & ./cpu_stdin & ./cpu_stdin &\n");
-    printf("\nthe address of str will be the same for each process having the same value of str.\n");
+    "this program on the command line, the address of str will be the same for each "
+    "process having the same value of str.\n");
+
+    printf("\nPID = %d\n", getpid());
     pp_cap(str);
 #else
+    printf("\nPID = %d\n", getpid());
     printf("Address of str = %p\n", &str);
 #endif
 

@@ -6,13 +6,13 @@
  * (https://github.com/remzi-arpacidusseau/ostep-code/blob/master/intro/cpu.c)
  *
  * To launch several instances in succession, run as follows:
- * prompt > ./cpu A & ./cpu B & ./cpu C & ./cpu D &
+ * prompt > ./cpu_stdin A & ./cpu_stdin B & ./cpu_stdin C & ./cpu_stdin D &
  *
  * Unfortunately, probably not suitable to be added to the CHERI examples library,
  * as in its current form it requires user input.
  * 
  * However, the interesting thing about running this in a CHERI environment with stdin,
- * is that the address of str is the same for every process,
+ * is that the address of str is the same for every instance,
  * whereas in a non-CHERI environment it is always different.
 */
 
@@ -20,6 +20,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 
@@ -46,7 +47,9 @@ int main(int argc, char *argv[])
 {
     if (argc != 2) 
     {
-        fprintf(stderr, "usage: cpu <string>\n");
+        fprintf(stderr, "usage: cpu_stdin <string>\n");
+        printf("To launch multiple instances from the command line:\n");
+        printf("prompt> ./cpu_stdin <string> & ./cpu_stdin <string> &\n");
         exit(1);
     }
 
@@ -59,11 +62,13 @@ int main(int argc, char *argv[])
 
 #ifdef __CHERI_PURE_CAPABILITY__
     printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
-    "this program on the command line, like so:\n");\
-    printf("\nprompt> ./cpu_stdin A & ./cpu_stdin B & ./cpu_stdin C & ./cpu_stdin D &\n");
-    printf("\nthe address of str will be the same for each process.\n");
+    "this program on the command line, the address of str will be the same for each "
+    "process having the same value of str.\n");
+
+    printf("\nPID = %d\n", getpid());
     pp_cap(str);
 #else
+    printf("\nPID = %d\n", getpid());
     printf("Address of str = %p\n", &str);
 #endif
 
