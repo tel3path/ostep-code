@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-intmax_t GetTime() 
+intmax_t get_time() 
 {
     struct timeval t;
     intptr_t rc = gettimeofday(&t, NULL);
@@ -27,8 +27,8 @@ intmax_t GetTime()
 
 void Spin(int howlong) 
 {
-    intmax_t t = GetTime();
-    while ((GetTime() - t) < (intmax_t) howlong)
+    intmax_t t = get_time();
+    while ((get_time() - t) < (intmax_t) howlong)
         ; // do nothing in loop
 }
 
