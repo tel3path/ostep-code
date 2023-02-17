@@ -5,7 +5,7 @@
  * Arpaci-Dusseau Books, August, 2018 (Version 1.00)
  * (https://github.com/remzi-arpacidusseau/ostep-code/blob/master/intro/cpu.c)
  *
- * To launch several instances in succession, run as follows:
+ * To launch several instances at once, run in zsh as follows:
  * prompt > ./cpu_stdin A & ./cpu_stdin B & ./cpu_stdin C & ./cpu_stdin D &
  *
  * Unfortunately, probably not suitable to be added to the CHERI examples library,
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
 #ifdef __CHERI_PURE_CAPABILITY__
     printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
-    "this program on the command line, the address of str will be the same for each "
+    "this program at once in zsh, the address of str will be the same for each "
     "process.\n");
 
     printf("\nPID = %d\n", getpid());

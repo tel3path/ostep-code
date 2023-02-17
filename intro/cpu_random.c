@@ -13,7 +13,7 @@
  * whereas in a non-CHERI environment it is always different.
  *
  * This version uses a randomized value for each instance, in place of user input.
- * Run as follows:
+ * Run as follows in zsh:
  * prompt> ./cpu_random & ./cpu_random & ./cpu_random & ./cpu_random &
  *
  * The interesting thing about running cpu_random in a CHERI environment
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
 #ifdef __CHERI_PURE_CAPABILITY__
     printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
-    "this program on the command line, the address of str will be the same for each "
+    "this program at once in zsh, the address of str will be the same for each "
     "process having the same value of str.\n");
 
     printf("\nPID = %d\n", getpid());
