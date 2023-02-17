@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <inttypes.h>
 #include <pthread.h>
 #include <sched.h>
 #include <stdio.h>
@@ -10,40 +11,18 @@
 #include <semaphore.h>
 #endif
 
-#define Pthread_create(thread, attr, start_routine, arg) assert(pthread_create(thread, attr, start_routine, arg) == 0);
-#define Pthread_join(thread, value_ptr)                  assert(pthread_join(thread, value_ptr) == 0);
-
-#define Pthread_mutex_lock(m)                            assert(pthread_mutex_lock(m) == 0);
-#define Pthread_mutex_unlock(m)                          assert(pthread_mutex_unlock(m) == 0);
-#define Pthread_cond_signal(cond)                        assert(pthread_cond_signal(cond) == 0);
-#define Pthread_cond_wait(cond, mutex)                   assert(pthread_cond_wait(cond, mutex) == 0);
-
-#define Mutex_init(m)                                    assert(pthread_mutex_init(m, NULL) == 0);
-#define Mutex_lock(m)                                    assert(pthread_mutex_lock(m) == 0);
-#define Mutex_unlock(m)                                  assert(pthread_mutex_unlock(m) == 0);
-#define Cond_init(cond)                                  assert(pthread_cond_init(cond, NULL) == 0);
-#define Cond_signal(cond)                                assert(pthread_cond_signal(cond) == 0);
-#define Cond_wait(cond, mutex)                           assert(pthread_cond_wait(cond, mutex) == 0);
-
-#ifdef __linux__
-#define Sem_init(sem, value)                             assert(sem_init(sem, 0, value) == 0);
-#define Sem_wait(sem)                                    assert(sem_wait(sem) == 0);
-#define Sem_post(sem)                                    assert(sem_post(sem) == 0);
-#endif // __linux__
-
-
-double GetTime() 
+intmax_t get_time() 
 {
     struct timeval t;
     int rc = gettimeofday(&t, NULL);
     assert(rc == 0);
-    return (double) t.tv_sec + (double) t.tv_usec/1e6;
+    return (intmax_t) t.tv_sec + (intmax_t) t.tv_usec/1e6;
 }
 
 void Spin(int howlong) 
 {
-    double t = GetTime();
-    while ((GetTime() - t) < (double) howlong)
+    intmax_t t = get_time();
+    while ((get_time() - t) < (intmax_t) howlong)
         ; // do nothing in loop
 }
 
@@ -70,10 +49,10 @@ int main(int argc, char *argv[])
     loops = atoi(argv[1]);
     pthread_t p1, p2;
     printf("Initial value : %d\n", counter);
-    Pthread_create(&p1, NULL, worker, NULL); 
-    Pthread_create(&p2, NULL, worker, NULL);
-    Pthread_join(p1, NULL);
-    Pthread_join(p2, NULL);
+    assert(pthread_create(&p1, NULL, worker, NULL) == 0);
+    assert(pthread_create(&p2, NULL, worker, NULL) == 0);
+    assert(pthread_join(p1, NULL) == 0);
+    assert(pthread_join(p2, NULL) == 0);
     printf("Final value   : %d\n", counter);
     return 0;
 }
