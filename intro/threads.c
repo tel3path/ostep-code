@@ -11,14 +11,6 @@
 #include <semaphore.h>
 #endif
 
-intmax_t get_time() 
-{
-    struct timeval t;
-    int rc = gettimeofday(&t, NULL);
-    assert(rc == 0);
-    return (intmax_t) t.tv_sec + (intmax_t) t.tv_usec/1e6;
-}
-
 volatile int counter = 0; 
 int loops;
 
