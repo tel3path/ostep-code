@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 #ifdef __CHERI_PURE_CAPABILITY__
     printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
     "this program on the command line, the address of str will be the same for each "
-    "process having the same value of str.\n");
+    "process.\n");
 
     printf("\nPID = %d\n", getpid());
     pp_cap(str);
