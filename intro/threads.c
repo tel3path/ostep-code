@@ -19,13 +19,6 @@ intmax_t get_time()
     return (intmax_t) t.tv_sec + (intmax_t) t.tv_usec/1e6;
 }
 
-void Spin(int howlong) 
-{
-    intmax_t t = get_time();
-    while ((get_time() - t) < (intmax_t) howlong)
-        ; // do nothing in loop
-}
-
 volatile int counter = 0; 
 int loops;
 
