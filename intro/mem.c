@@ -1,22 +1,34 @@
+/*
+ * Based on the example from the "Intro" chapter of 
+ * "Operating Systems: Three Easy Pieces", 
+ * Remzi H. Arpaci-Dusseau and Andrea C. Arpaci-Dusseau,
+ * Arpaci-Dusseau Books, August, 2018 (Version 1.00)
+ * (https://github.com/remzi-arpacidusseau/ostep-code/blob/master/intro/mem.c)
+ * 
+ * Run as follows in zsh:
+ * prompt> ./mem &; ./mem & 
+*/
+
 #include <assert.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 
-double GetTime() 
+intmax_t GetTime() 
 {
     struct timeval t;
     int rc = gettimeofday(&t, NULL);
     assert(rc == 0);
-    return (double) t.tv_sec + (double) t.tv_usec/1e6;
+    return (intmax_t) t.tv_sec + (intmax_t) t.tv_usec/1e6;
 }
 
 void Spin(int howlong) 
 {
     double t = GetTime();
-    while ((GetTime() - t) < (double) howlong)
+    while ((GetTime() - t) < (intmax_t) howlong)
         ; // do nothing in loop
 }
 
