@@ -25,7 +25,7 @@ intmax_t get_time()
     return (intmax_t) t.tv_sec + (intmax_t) t.tv_usec/1e6;
 }
 
-void Spin(int howlong) 
+void spin(int howlong) 
 {
     intmax_t t = get_time();
     while ((get_time() - t) < (intmax_t) howlong)
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     *p = sizeof(intptr_t);
     while (1) 
     {
-        Spin(1);
+        spin(1);
         *p = *p + 1;
         printf("(%d) value of p: %ld\n", getpid(), *p);
     }
