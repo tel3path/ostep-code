@@ -20,30 +20,30 @@
 intmax_t GetTime() 
 {
     struct timeval t;
-    int rc = gettimeofday(&t, NULL);
+    intptr_t rc = gettimeofday(&t, NULL);
     assert(rc == 0);
     return (intmax_t) t.tv_sec + (intmax_t) t.tv_usec/1e6;
 }
 
 void Spin(int howlong) 
 {
-    double t = GetTime();
+    intmax_t t = GetTime();
     while ((GetTime() - t) < (intmax_t) howlong)
         ; // do nothing in loop
 }
 
 int main(int argc, char *argv[]) 
 {
-    int *p; 
-    p = malloc(sizeof(int));
+    intptr_t *p; 
+    p = malloc(sizeof(intptr_t));
     assert(p != NULL);
-    printf("(%d) addr pointed to by p: %p\n", (int) getpid(), p);
-    *p = sizeof(int);
+    printf("(%ld) addr pointed to by p: %p\n", (intptr_t) getpid(), p);
+    *p = sizeof(intptr_t);
     while (1) 
     {
         Spin(1);
         *p = *p + 1;
-        printf("(%d) value of p: %d\n", getpid(), *p);
+        printf("(%d) value of p: %ld\n", getpid(), *p);
     }
     return 0;
 }
