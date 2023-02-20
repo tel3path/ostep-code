@@ -4,6 +4,7 @@
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 
@@ -34,10 +35,14 @@ int main(int argc, char *argv[])
     loops = atoi(argv[1]);
     pthread_t p1, p2;
     printf("Initial value : %zu\n", counter);
+#if (!defined(__CHERI_CAPABILITY_WIDTH__) && !defined(__CHERI_PURE_CAPABILITY__))
     assert(pthread_create(&p1, NULL, worker, NULL) == 0);
     assert(pthread_create(&p2, NULL, worker, NULL) == 0);
     assert(pthread_join(p1, NULL) == 0);
     assert(pthread_join(p2, NULL) == 0);
+#else
+    
+#endif
     printf("Final value   : %zu\n", counter);
     return 0;
 }

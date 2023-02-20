@@ -1,5 +1,5 @@
 
-all: cpu_random cpu_stdin mem threads io
+all: cpu_random cpu_stdin cpu_stdin_smashy mem threads io
 
 clean:
 	rm -f cpu mem threads io
@@ -9,6 +9,9 @@ cpu_random: cpu_random.c
 
 cpu_stdin: cpu_stdin.c
 	gcc -o cpu_stdin cpu_stdin.c -Wall
+
+cpu_stdin_smashy: cpu_stdin_smashy.c
+	gcc -o cpu_stdin_smashy cpu_stdin_smashy.c -Wall
 
 mem: mem.c
 	gcc -o mem mem.c -Wall
