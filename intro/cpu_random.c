@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 {    
     char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     srand((unsigned)time(NULL));
-    size_t index = rand() % 26;
+    size_t index = rand() % 52;
     char *str = &alphabet[index];
 
 #if (defined(__aarch64__) && defined(__CHERI_CAPABILITY_WIDTH__) &&                                \
