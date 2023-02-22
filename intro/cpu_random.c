@@ -58,8 +58,11 @@ void spin(intptr_t howlong)
 int main(int argc, char *argv[])
 {    
     char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char *cyrillic = "бГДЕЁЖЗИЙКЛМПРФХЦЧШЩъЫьЭЮЯ";
     srand((unsigned)time(NULL));
-    size_t index = rand() % 52;
+    
+    const size_t twice_alphabet_size = 54;
+    size_t index = rand() % twice_alphabet_size;
     char *str = &alphabet[index];
 
 #if (defined(__aarch64__) && defined(__CHERI_CAPABILITY_WIDTH__) &&                                \
