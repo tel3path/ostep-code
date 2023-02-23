@@ -58,23 +58,32 @@ void spin(intptr_t howlong)
 int main(int argc, char *argv[])
 {    
     char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char *cyrillic = "бГДЕЁЖЗИЙКЛМПРФХЦЧШЩъЫьЭЮЯ";
+    char *slogan = "mine is an evil laugh muaha";
     srand((unsigned)time(NULL));
     
-    const size_t twice_alphabet_size = 54;
-    size_t index = rand() % twice_alphabet_size;
-    char *str = &alphabet[index];
-
-#if (defined(__aarch64__) && defined(__CHERI_CAPABILITY_WIDTH__) &&                                \
-     !defined(__CHERI_PURE_CAPABILITY__))
-    printf("\nOn morello-hybrid, the address of str should be different for each instance.\n");
-#endif
-
+    const size_t alphabet_size = 26;
+    size_t goodindex = rand() % alphabet_size;
+    char *str = &alphabet[goodindex];
+    
 #ifdef __CHERI_PURE_CAPABILITY__
-    printf("\nOn morello-purecap or riscv64-purecap, if you launch multiple instances of "
-    "this program at once in zsh, the address of str will be the same for each "
-    "process having the same value of str.\n");
+    printf("\nPID = %d\n", getpid());
+    pp_cap(str);
+#else
+    printf("\nPID = %d\n", getpid());
+    printf("Address of str = %p\n", &str);
+#endif
+    
+    for(int i=0; i<10; i++) {
+        printf("%s\n", str);
+        spin(1);
+    }
 
+    const size_t twice_alphabet_size = 52;
+    size_t evilindex = twice_alphabet_size - goodindex;
+    //char *evilstr = &alphabet[evilindex];
+    str = &alphabet[evilindex];
+    
+#ifdef __CHERI_PURE_CAPABILITY__
     printf("\nPID = %d\n", getpid());
     pp_cap(str);
 #else
@@ -86,8 +95,6 @@ int main(int argc, char *argv[])
         printf("%s\n", str);
         spin(1);
     }
-    
-    free(str);
     
     return 0;
 }
